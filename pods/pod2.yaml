@@ -9,7 +9,7 @@ spec:
   - env:
     - name: MESSAGE
       value: Hi! I'm an environment variable in pod 2
-    image: quay.io/practicalopenshift/hello-world-go
+    image: quay.io/practicalopenshift/hello-world
     imagePullPolicy: Always
     name: hello-world-override
     resources: {}
