@@ -13,8 +13,3 @@ spec:
     imagePullPolicy: Always
     name: hello-world-override
     resources: {}
-  dnsPolicy: ClusterFirst
-  nodeName: localhost
-  priority: 0
-  restartPolicy: Always
-  schedulerName: default-scheduler
