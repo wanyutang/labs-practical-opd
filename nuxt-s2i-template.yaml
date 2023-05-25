@@ -14,7 +14,9 @@ objects:
   spec:
     source:
       git:
-        uri: <專案的 Git 位址>
+        uri: https://github.com/wanyutang/ocp-nuxt3-demo.git
+        ref: main
+        contextDir: package
     strategy:
       sourceStrategy:
         from:
@@ -27,7 +29,7 @@ objects:
   triggers:
     - type: GitHub
       github:
-        secret: <GitHub Webhook Secret>
+        secret: githubcomwanyutangocpnuxt3demo
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
