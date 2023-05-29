@@ -1,0 +1,29 @@
+apiVersion: controller.devfile.io/v1alpha1
+kind: DevWorkspaceRouting
+metadata:
+  annotations:
+    controller.devfile.io/devworkspace-started: "true"
+    controller.devfile.io/restricted-access: "true"
+  labels:
+    controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+  name: routing-workspaceed6274a6a0e74506
+  ownerReferences:
+  - apiVersion: workspace.devfile.io/v1alpha2
+    blockOwnerDeletion: true
+    controller: true
+    kind: DevWorkspace
+    name: terminal-im9s3y
+    uid: ed6274a6-a0e7-4506-96f1-ce7e3699bbb2
+spec:
+  devworkspaceId: workspaceed6274a6a0e74506
+  endpoints:
+    web-terminal-exec:
+    - attributes:
+        type: main
+      exposure: public
+      name: exec
+      protocol: http
+      targetPort: 4444
+  podSelector:
+    controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+  routingClass: web-terminal

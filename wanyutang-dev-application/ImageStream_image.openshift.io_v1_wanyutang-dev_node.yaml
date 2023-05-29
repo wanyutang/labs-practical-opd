@@ -1,0 +1,26 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+    openshift.io/image.dockerRepositoryCheck: "2023-05-29T03:03:55Z"
+  labels:
+    app: demo-app
+    app.kubernetes.io/component: demo-app
+    app.kubernetes.io/instance: demo-app
+  name: node
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations:
+      openshift.io/imported-from: node:14
+    from:
+      kind: DockerImage
+      name: node:14
+    generation: 2
+    importPolicy:
+      importMode: Legacy
+    name: "14"
+    referencePolicy:
+      type: Source

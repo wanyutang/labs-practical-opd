@@ -1,0 +1,33 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/instance: modelmesh-controller
+    app.kubernetes.io/managed-by: modelmesh-controller
+    app.kubernetes.io/name: modelmesh-controller
+    modelmesh-service: modelmesh-serving
+  name: modelmesh-metrics-monitor
+  ownerReferences:
+  - apiVersion: v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Service
+    name: modelmesh-serving
+    uid: e74c80df-4cc8-4cdc-a4dd-3ba933879f83
+spec:
+  endpoints:
+  - bearerTokenSecret:
+      key: ""
+    interval: 30s
+    port: prometheus
+    scheme: https
+    tlsConfig:
+      ca: {}
+      cert: {}
+      insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+    - wanyutang-dev
+  selector:
+    matchLabels:
+      modelmesh-service: modelmesh-serving

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    controller.devfile.io/restricted-access: "true"
+    service.alpha.openshift.io/serving-cert-signed-by: openshift-service-serving-signer@1667937354
+    service.beta.openshift.io/serving-cert-secret-name: workspaceed6274a6a0e74506-service
+    service.beta.openshift.io/serving-cert-signed-by: openshift-service-serving-signer@1667937354
+  labels:
+    controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+  name: workspaceed6274a6a0e74506-service
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: exec
+    port: 4444
+    protocol: TCP
+    targetPort: 4444
+  selector:
+    controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+  sessionAffinity: None
+  type: ClusterIP

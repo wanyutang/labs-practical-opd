@@ -1,0 +1,156 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    controller.devfile.io/restricted-access: "true"
+  labels:
+    controller.devfile.io/creator: 70f81ec8-4b78-4efe-916e-0f933434f395
+    controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+    controller.devfile.io/devworkspace_name: terminal-im9s3y
+  name: workspaceed6274a6a0e74506
+  ownerReferences:
+  - apiVersion: workspace.devfile.io/v1alpha2
+    blockOwnerDeletion: true
+    controller: true
+    kind: DevWorkspace
+    name: terminal-im9s3y
+    uid: ed6274a6-a0e7-4506-96f1-ce7e3699bbb2
+spec:
+  progressDeadlineSeconds: 300
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        controller.devfile.io/restricted-access: "true"
+      creationTimestamp: null
+      labels:
+        controller.devfile.io/creator: 70f81ec8-4b78-4efe-916e-0f933434f395
+        controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+        controller.devfile.io/devworkspace_name: terminal-im9s3y
+      name: workspaceed6274a6a0e74506
+      namespace: wanyutang-dev
+    spec:
+      containers:
+      - args:
+        - tail
+        - -f
+        - /dev/null
+        env:
+        - name: DEVWORKSPACE_COMPONENT_NAME
+          value: web-terminal-tooling
+        - name: DEVWORKSPACE_NAMESPACE
+          value: wanyutang-dev
+        - name: DEVWORKSPACE_NAME
+          value: terminal-im9s3y
+        - name: DEVWORKSPACE_ID
+          value: workspaceed6274a6a0e74506
+        - name: DEVWORKSPACE_CREATOR
+          value: 70f81ec8-4b78-4efe-916e-0f933434f395
+        - name: DEVWORKSPACE_IDLE_TIMEOUT
+          value: 15m
+        - name: DEVWORKSPACE_METADATA
+          value: /devworkspace-metadata
+        - name: DEVWORKSPACE_FLATTENED_DEVFILE
+          value: /devworkspace-metadata/flattened.devworkspace.yaml
+        - name: DEVWORKSPACE_ORIGINAL_DEVFILE
+          value: /devworkspace-metadata/original.devworkspace.yaml
+        image: registry.redhat.io/web-terminal/web-terminal-tooling-rhel8@sha256:f42093a4083f4c6c9bfa9be1b98fdcc6a0f6f1d81a951e42b20acb43d32def11
+        imagePullPolicy: Always
+        name: web-terminal-tooling
+        resources:
+          limits:
+            cpu: 400m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /devworkspace-metadata
+          name: workspace-metadata
+          readOnly: true
+        - mountPath: /var/serving-cert/
+          name: devworkspace-serving-cert-workspaceed6274a6a0e74506-service
+          readOnly: true
+      - command:
+        - /go/bin/che-machine-exec
+        - --authenticated-user-id
+        - $(DEVWORKSPACE_CREATOR)
+        - --idle-timeout
+        - $(WEB_TERMINAL_IDLE_TIMEOUT)
+        - --pod-selector
+        - controller.devfile.io/devworkspace_id=$(DEVWORKSPACE_ID)
+        - --use-tls
+        - --use-bearer-token
+        env:
+        - name: DEVWORKSPACE_COMPONENT_NAME
+          value: web-terminal-exec
+        - name: WEB_TERMINAL_IDLE_TIMEOUT
+          value: 15m
+        - name: DEVWORKSPACE_NAMESPACE
+          value: wanyutang-dev
+        - name: DEVWORKSPACE_NAME
+          value: terminal-im9s3y
+        - name: DEVWORKSPACE_ID
+          value: workspaceed6274a6a0e74506
+        - name: DEVWORKSPACE_CREATOR
+          value: 70f81ec8-4b78-4efe-916e-0f933434f395
+        - name: DEVWORKSPACE_IDLE_TIMEOUT
+          value: 15m
+        - name: DEVWORKSPACE_METADATA
+          value: /devworkspace-metadata
+        - name: DEVWORKSPACE_FLATTENED_DEVFILE
+          value: /devworkspace-metadata/flattened.devworkspace.yaml
+        - name: DEVWORKSPACE_ORIGINAL_DEVFILE
+          value: /devworkspace-metadata/original.devworkspace.yaml
+        image: registry.redhat.io/web-terminal/web-terminal-exec-rhel8@sha256:c82e89d9e8a5d1c9e5c94835d38cb601e5e1ecb1e53cb038d0423b1b19d98683
+        imagePullPolicy: Always
+        name: web-terminal-exec
+        ports:
+        - containerPort: 4444
+          name: exec
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 400m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /devworkspace-metadata
+          name: workspace-metadata
+          readOnly: true
+        - mountPath: /var/serving-cert/
+          name: devworkspace-serving-cert-workspaceed6274a6a0e74506-service
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: workspaceed6274a6a0e74506-sa-dockercfg-hxgxc
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: workspaceed6274a6a0e74506-sa
+      serviceAccountName: workspaceed6274a6a0e74506-sa
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: workspaceed6274a6a0e74506-metadata
+          optional: true
+        name: workspace-metadata
+      - name: devworkspace-serving-cert-workspaceed6274a6a0e74506-service
+        secret:
+          defaultMode: 420
+          secretName: workspaceed6274a6a0e74506-service

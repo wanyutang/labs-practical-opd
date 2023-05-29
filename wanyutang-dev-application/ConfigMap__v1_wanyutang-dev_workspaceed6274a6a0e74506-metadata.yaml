@@ -1,0 +1,71 @@
+apiVersion: v1
+data:
+  flattened.devworkspace.yaml: |
+    components:
+    - attributes:
+        controller.devfile.io/imported-by: web-terminal-tooling
+      container:
+        args:
+        - tail
+        - -f
+        - /dev/null
+        cpuLimit: 400m
+        cpuRequest: 100m
+        image: registry.redhat.io/web-terminal/web-terminal-tooling-rhel8@sha256:f42093a4083f4c6c9bfa9be1b98fdcc6a0f6f1d81a951e42b20acb43d32def11
+        memoryLimit: 256Mi
+        memoryRequest: 128Mi
+        mountSources: false
+        sourceMapping: /projects
+      name: web-terminal-tooling
+    - attributes:
+        controller.devfile.io/imported-by: web-terminal-exec
+      container:
+        command:
+        - /go/bin/che-machine-exec
+        - --authenticated-user-id
+        - $(DEVWORKSPACE_CREATOR)
+        - --idle-timeout
+        - $(WEB_TERMINAL_IDLE_TIMEOUT)
+        - --pod-selector
+        - controller.devfile.io/devworkspace_id=$(DEVWORKSPACE_ID)
+        - --use-tls
+        - --use-bearer-token
+        cpuLimit: 400m
+        cpuRequest: 100m
+        endpoints:
+        - attributes:
+            controller.devfile.io/endpoint-url: https://workspaceed6274a6a0e74506-service.wanyutang-dev.svc:4444
+            type: main
+          exposure: public
+          name: exec
+          protocol: http
+          targetPort: 4444
+        env:
+        - name: WEB_TERMINAL_IDLE_TIMEOUT
+          value: 15m
+        image: registry.redhat.io/web-terminal/web-terminal-exec-rhel8@sha256:c82e89d9e8a5d1c9e5c94835d38cb601e5e1ecb1e53cb038d0423b1b19d98683
+        memoryLimit: 128Mi
+        memoryRequest: 128Mi
+        mountSources: false
+        sourceMapping: /projects
+      name: web-terminal-exec
+  original.devworkspace.yaml: |
+    components:
+    - name: web-terminal-tooling
+      plugin:
+        kubernetes:
+          name: web-terminal-tooling
+          namespace: crw
+    - name: web-terminal-exec
+      plugin:
+        kubernetes:
+          name: web-terminal-exec
+          namespace: crw
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: devworkspace-controller
+    app.kubernetes.io/part-of: devworkspace-operator
+    controller.devfile.io/devworkspace_id: workspaceed6274a6a0e74506
+    controller.devfile.io/watch-configmap: "true"
+  name: workspaceed6274a6a0e74506-metadata
